@@ -1,0 +1,182 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @LastEditors: sueRimn
+ * @Date: 2019-04-25 11:49:12
+ * @LastEditTime: 2019-04-29 13:44:31
+ -->
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./index.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header></header>
+    <main>
+        <div id="zp">
+
+        </div>
+        <!-- <div class="key">
+            
+        </div> -->
+    </main>
+    <footer></footer>
+    <script>
+        //初始化数据
+        // loadData();
+        var keys = loadData()['keys'];
+        var netSet = loadData()['netSet'];
+        //加载缓存
+        //判断浏览器里面是否存有修改了的netSet
+        var localNetSet = loadCache('netSet');
+        if (localNetSet) {
+            netSet = localNetSet;
+        };
+        //在main里面创建三个div用来放键盘的三排字母
+        var indexDiv = 0;
+        // console.log(keys.length);
+        while (indexDiv < keys.length) {
+            
+            //创建一个div
+            var divkbd = creatbox('div');
+            //获取文档中需要添加div的元素。然后在里面添加div
+            document.getElementById('zp').appendChild(divkbd);
+            //第二次循环，为添加的div中加入kbd
+            var indexKbd = 0;
+            // console.log(keys);
+            // console.log(keys[indexDiv]);
+            while (indexKbd < keys[indexDiv].length) {
+                var kbd = document.createElement('kbd');
+                divkbd.appendChild(kbd);
+                //给字母外面添加一个span标签
+                var span = document.createElement('span');
+                span.textContent = keys[indexDiv][indexKbd];
+                kbd.appendChild(span);
+                //在kbd里面添加img用来显示icon图标
+                var img = document.createElement('img');
+                if (netSet[keys[indexDiv][indexKbd]]) {
+                    img.src = 'https://www.' + netSet[keys[indexDiv][indexKbd]] + '/favicon.ico'
+                } else {
+                    img.src = 'https://i.loli.net/2017/11/10/5a05afbc5e183.png';
+
+                }
+
+                img.className = "img";
+                // console.log(netSet[keys[indexDiv][indexKbd]]);
+                kbd.appendChild(img);
+                //给kbd里面加入键盘的值
+                // kbd.textContent = keys[indexDiv][indexKbd];
+                //在kbd里面添加按钮，可以为用户修改网址提供窗口
+                var btn = document.createElement('button');
+                kbd.appendChild(btn);
+                btn.textContent = '编辑';
+
+                //为button设置一个id，方便后面找到该button
+                btn.id = keys[indexDiv][indexKbd];
+                // console.log( btn.id);
+                //为button添加点击事件
+                btn.onclick = function (btnEvent) {
+
+                    // console.log(btnEvent);
+                    //拿到点击了那个button按钮的值
+                    var zhi = btnEvent['target']["id"];
+                    //给用户一个输出东西的窗口，并拿到该值
+                    var webset = prompt("请输入网址");
+                    netSet[zhi] = webset;
+                    //将数据通过localStorage存入浏览器
+                    localStorage.setItem("netSet", JSON.stringify(netSet));
+                    // console.log(netSet);
+                    //拿到点击button上一个标签img
+                    var img2 = btnEvent['target'].previousSibling;
+                    // console.log(img2)
+                    img2.src = 'http://www.' + webset + '/favicon.ico'
+                };
+                //添加img请求报错监听
+                img.onerror = function (imgEvent) {
+                    // console.log(imgEvent['target']);
+                    imgEvent['target'].src = 'https://i.loli.net/2017/11/10/5a05afbc5e183.png';
+                }
+                indexKbd += 1;
+            };
+            indexDiv += 1;
+        };
+
+        //添加用户的键盘监听
+        document.onkeypress = function (keypress) {
+            //获取用户输入的字母
+            // console.log(keypress);
+            //通过Key来获取用户输入的值
+            var value = keypress['key'];
+            // console.log(value);
+            //通过值找到netset里面的网址
+            if(netSet[value]){
+                // var webset = 'http://' + netSet[value];
+                var webset = netSet[value];
+            // //在当前窗口打开网址
+            // location.href = webset;
+            //在新窗口打开网址
+            window.open(webset, '_blank');
+            } else {
+                var webset = prompt("请输入网址");
+                netSet[value] =webset;
+                 //将数据通过localStorage存入浏览器
+                 localStorage.setItem("netSet", JSON.stringify(netSet));
+                //  window.open(webset,'_blank');
+                 location.reload();  
+                 location.href ='http://'+webset;
+
+                 
+            }
+            
+        }
+        /**
+         * @name: 
+         * @test: test font
+         * @msg: 
+         * @param {type} 
+         * @return: 对象keys，netSet
+         */
+        function loadData() {
+            //构思数据结构，创建一个hash 里面包含三个存放三行键盘字母的数组
+            var keys = new Array(
+                ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+                ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+            );
+            //创建一个hash组用来放置网址
+            var netSet = {
+                'q': 'qq.com',
+                'w': 'weibo.com',
+                'e': 'ele.com',
+                'b': 'blibli.com',
+                'm': 'qq.com',
+            };
+            return {
+                'keys': keys,
+                'netSet': netSet
+            }
+        }
+        /**
+         * @name: 
+         * @test: test font
+         * @msg: 
+         * @param name
+         * @return: 
+         */
+        function loadCache(name){
+           return JSON.parse(localStorage.getItem(name) || "null");
+        }
+        function creatbox(name){
+                return document.createElement(name);
+            }
+    </script>
+</body>
+
+</html>

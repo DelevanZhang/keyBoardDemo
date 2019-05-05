@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    text-decoration: none;
+}
+
+body {
+    background: red url(./images/keyborad.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+#zp div kbd {
+
+    display: inline-block;
+    /* width:4em;
+    height:4em; */
+    width: 58px;
+    height: 50px;
+    text-transform: uppercase;
+    position: relative;
+    background: linear-gradient(to bottom, #292929 0%, #111111 100%);
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgb(55, 55, 55), 0 0 0 2px rgb(31, 32, 32), 0 3px 0 2px rgb(8, 8, 8);
+    margin: 6px;
+}
+
+#zp {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+}
+
+main {
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#zp div kbd > button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+
+#zp div kbd:hover > button {
+    display: inline-block;
+}
+
+#zp > div > kbd > .img {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#zp > div > kbd > span {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    font-family: Helvetica;
+}
+
+main > #zp > div:nth-child(2) {
+    margin-left: 16px;
+}
+
+main > #zp > div:nth-child(3) {
+    margin-left: 52px;
+}
+
+/* main > .key {
+    width:72px;
+    height: 70px;
+    display: inline-block;
+    background-color: #000;
+    border-radius: 6px;
+    box-shadow: 2px 2px 0px 0px rgb(142, 142, 142);
+} */
